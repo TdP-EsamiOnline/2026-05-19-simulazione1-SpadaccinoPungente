@@ -13,31 +13,28 @@ class View(ft.UserControl):
         self._controller = None
         # graphical elements
         self._title = None
-        self.txt_name = None
-        self.btn_hello = None
+        self._ddGenre = None
+        self._btnCreaGrafo = None
+        self._ddArtist = None
+        self._btnTrovaCammino = None
         self.txt_result = None
-        self.txt_container = None
 
     def load_interface(self):
         # title
         self._title = ft.Text("TdP-Simulazione esame Chinook", color="blue", size=24)
         self._page.controls.append(self._title)
 
-
         self._ddGenre = ft.Dropdown(label="Genere", width=250)
         self._controller.fillDDGenre()
-        self._btnCreaGrafo = ft.ElevatedButton(text="Crea Grafo",
-                                               on_click=self._controller.handleCreaGrafo, width=250)
+        self._btnCreaGrafo = ft.ElevatedButton(text="Crea Grafo", on_click=self._controller.handleCreaGrafo, width=250)
 
-        row1 = ft.Row([self._ddGenre, self._btnCreaGrafo],
-                      alignment=ft.MainAxisAlignment.CENTER)
+        row1 = ft.Row([self._ddGenre, self._btnCreaGrafo], alignment=ft.MainAxisAlignment.CENTER)
         self._page.controls.append(row1)
 
-        self._ddArtist = ft.Dropdown(label="Artist", width=250)
-        self._btnCreaGrafo = ft.ElevatedButton(text="Trova Cammino", on_click=self._controller.handleCammino, width=250)
+        self._ddArtist = ft.Dropdown(label="Artist", width=250, on_change=self._controller.handleSelectionArtist)
+        self._btnTrovaCammino = ft.ElevatedButton(text="Trova Cammino", on_click=self._controller.handleCammino, width=250, disabled=True)
 
-        row2 = ft.Row([self._ddArtist, self._btnCreaGrafo],
-                      alignment=ft.MainAxisAlignment.CENTER)
+        row2 = ft.Row([self._ddArtist, self._btnTrovaCammino], alignment=ft.MainAxisAlignment.CENTER)
         self._page.controls.append(row2)
 
         # List View where the reply is printed
@@ -51,9 +48,6 @@ class View(ft.UserControl):
 
     @controller.setter
     def controller(self, controller):
-        self._controller = controller
-
-    def set_controller(self, controller):
         self._controller = controller
 
     def create_alert(self, message):
